@@ -3,9 +3,10 @@
 > 移动端项目基础搭建模板
 
 ## 功能模块
+- vue-cli脚手架为模板
 - 引入mint-ui
 - 引入mui-ui
-- 运用filter，vuex
+- 应用filter，vuex
 - 添加了微信配置文件
 - 添加了http响应拦截器
 - 封装axios，请求库挂载在Vue的原型，调用只需`this.$api.get/post(url)`
