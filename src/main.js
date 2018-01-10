@@ -3,13 +3,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App'
-import routers from './router'
+import routes from './router'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import common from './wxcommon/common'
 import api from './api'
 import config from './config'
 import * as filters from './filters'
+import store from './store'
 
 // 全局公共方法
 Vue.prototype.common = common
@@ -28,7 +29,7 @@ Vue.use(MintUI)
 Vue.use(VueRouter)
 const router = new VueRouter({
   // mode: 'history',
-  routers
+  routes
 })
 router.beforeEach((to, from, next) => {
   document.body.scrollTop = 0;
@@ -40,6 +41,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })
