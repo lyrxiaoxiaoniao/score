@@ -3,7 +3,7 @@ import HelloWorld from '@/components/HelloWorld'
 
 let routers = [
   {
-    path: '/',
+    path: '/hello',
     name: 'HelloWorld',
     component: HelloWorld
   }

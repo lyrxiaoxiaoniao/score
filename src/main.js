@@ -10,6 +10,7 @@ import common from './wxcommon/common'
 import api from './api'
 import config from './config'
 import * as filters from './filters'
+import store from './store'
 
 // 全局公共方法
 Vue.prototype.common = common
@@ -40,6 +41,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })
