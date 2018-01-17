@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App'
-import routers from './router'
+import routes from './router'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import common from './wxcommon/common'
@@ -28,7 +28,7 @@ Vue.use(MintUI)
 Vue.use(VueRouter)
 const router = new VueRouter({
   // mode: 'history',
-  routers
+  routes
 })
 router.beforeEach((to, from, next) => {
   document.body.scrollTop = 0;
