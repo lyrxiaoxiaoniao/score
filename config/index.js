@@ -56,6 +56,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
+    // assetsPublicPath: 'https://scplugins.oss-cn-shenzhen.aliyuncs.com/plugins/app/share/',
 
     /**
      * Source Maps
