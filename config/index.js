@@ -10,7 +10,15 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/hxapijava': {
+        target: 'http://121.42.231.1:8080',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/hxapijava': '/hxapijava'
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

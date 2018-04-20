@@ -26,6 +26,12 @@ export default {
     getTime () {
       this.time = Date.now()
     }
+  },
+  mounted() {
+    this.$api.get(this.$config.baseserverURI + this.$config.baseAPi, {vars: {"action":"systemmessage_list_get","userid":"1","pagenum":"1"}})
+    .then(res => {
+      console.log(res, 'eqweqweqwew')
+    })
   }
 }
 </script>
