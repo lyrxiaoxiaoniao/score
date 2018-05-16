@@ -2,9 +2,7 @@ import api from '../api'
 import store    from '../store'
 export default {
   //朋友圈分享
-  shareFriend(title, desc, link, imgUrl, type, dataUrl, callback) {
-  // shareFriend(title, desc, link, imgUrl, type, dataUrl) {
-    // http://www.52mlsz.com/wx/api/ticket/sign
+  shareFriend(title, desc, link, imgUrl, type, dataUrl) {
     api.get('https://gov.shencom.cn/wx/config/show')
       .then(function (json) {
         let data = json.data.data
@@ -27,12 +25,6 @@ export default {
             type: type ? type : '', // 分享类型,music、video或link，不填默认为link
             dataUrl: dataUrl ? dataUrl : '', // 如果type是music或video，则要提供数据链接，默认为空
             success: function (res) {
-              let shareType = 1
-              // 用户确认分享后执行的回调函数
-              console.log(link, 3333)
-              if (callback) {
-                callback(res, shareType)
-              }
             },
             cancel: function () {
               // 用户取消分享后执行的回调函数
@@ -44,12 +36,6 @@ export default {
             link: link, // 分享链接
             imgUrl: imgUrl, // 分享图标
             success: function (res) {
-              let shareType = 2
-              if (callback) {
-                callback(res, shareType)
-              }
-              // console.log(res)
-              // 用户确认分享后执行的回调函数
             },
             cancel: function () {
               // 用户取消分享后执行的回调函数
@@ -62,12 +48,6 @@ export default {
             link: link, // 分享链接
             imgUrl: imgUrl, // 分享图标
             success: function (res) {
-              let shareType = 3
-              if (callback) {
-                callback(res, shareType)
-              }
-              // console.log(res)
-              // 用户确认分享后执行的回调函数
             },
             cancel: function () {
               // 用户取消分享后执行的回调函数
@@ -80,12 +60,6 @@ export default {
             link: link, // 分享链接
             imgUrl: imgUrl, // 分享图标
             success: function (res) {
-              let shareType = 4
-              if (callback) {
-                callback(res, shareType)
-              }
-              // console.log(res)
-              // 用户确认分享后执行的回调函数
             },
             cancel: function () {
               // 用户取消分享后执行的回调函数
@@ -98,12 +72,6 @@ export default {
             link: link, // 分享链接
             imgUrl: imgUrl, // 分享图标
             success: function (res) {
-              let shareType = 5
-              if (callback) {
-                callback(res, shareType)
-              }
-              // console.log(res)
-              // 用户确认分享后执行的回调函数
             },
             cancel: function () {
               // 用户取消分享后执行的回调函数

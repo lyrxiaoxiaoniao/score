@@ -17,7 +17,7 @@ Vue.prototype.common = common
 Vue.prototype.$api = api
 Vue.prototype.$config = config
 
-// 导入过滤函数 
+// 导入过滤函数
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
@@ -34,7 +34,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   document.body.scrollTop = 0;
   next()
-}) 
+})
 
 Vue.config.productionTip = false
 /* eslint-disable no-new */

@@ -12,26 +12,15 @@ axios.defaults.timeout = 5000
 
 axios.interceptors.request.use(config => {
   config.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-//config.headers.common['scid'] = 'sc9526AF69EEC9FE3B'
- // sessionStorage.setItem("scid", "sc9526AF69EEC9FE3B")
-  // sessionStorage.setItem("scid", "sc87C6CB208064CC1D")
-  // config.headers.common['scid'] = 'sc87C6CB208064CC1D'
   if(!store.state.scid) {
     store.state.scid = getQueryString('scid') || ''
     config.headers.common['scid'] = getQueryString('scid')
     sessionStorage.setItem("scid", getQueryString('scid'))
     store.state.scid = getQueryString('scid')
-    // if(getQueryString('scid') == 'gmaj'){
-    //   document.title = '爱分享'
-    //   store.state.slugid = 'ishare'
-    // }
   }else {
     config.headers.common['scid'] = store.state.scid
     sessionStorage.setItem("scid", getQueryString('scid'))
     store.state.scid = getQueryString('scid')
-    // if(!store.state.slugid && store.state.scid == 'gmaj'){
-    //   store.state.slugid = 'gmaj'
-    // }
   }
   return config
 }, error => {
