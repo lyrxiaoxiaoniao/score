@@ -11,11 +11,12 @@ import api from './api'
 import config from './config'
 import * as filters from './filters'
 import store from './store'
+import './utils/rem'
 
 // 全局公共方法
 Vue.prototype.common = common
 Vue.prototype.$api = api
-Vue.prototype.$config = config
+Vue.prototype.config = config
 
 // 导入过滤函数
 Object.keys(filters).forEach(key => {

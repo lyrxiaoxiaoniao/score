@@ -7,6 +7,8 @@ let store = new Vuex.Store({
   state: {
     scid: null,
     slugid: null,
+    appName: null,
+    systemAuthor: null,
     subscribe: '', // 关注
     routerchange: false
   },

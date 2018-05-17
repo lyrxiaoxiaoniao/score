@@ -1,11 +1,13 @@
-
-import HelloWorld from '@/components/HelloWorld'
-
 let routers = [
   {
-    path: '/hello',
-    name: 'HelloWorld',
-    component: HelloWorld
+    path: '/copyRight',
+    name: 'copyRight',
+    component: () => import('../components/common/copyRight.vue')
+  },
+  {
+    path: '/uploadImg',
+    name: 'uploadImg',
+    component: () => import('../components/common/uploadImg.vue')
   }
 ]
 export default routers
