@@ -1,8 +1,8 @@
 <template>
   <div id="copyRight">
     <div>
-      <!--<p v-html="'版权所有©' + appName + '&nbsp;&nbsp;技术支持©深传互动'"></p>-->
-      <p v-html="'版权所有©罗湖区城市管理局&nbsp;&nbsp;技术支持©深传互动'"></p>
+      <p v-html="'版权所有©' + appName + '&nbsp;&nbsp;技术支持©深传互动'"></p>
+      <!-- <p v-html="'版权所有©罗湖区城市管理局&nbsp;&nbsp;技术支持©深传互动'"></p> -->
     </div>
   </div>
 </template>

@@ -146,8 +146,7 @@
               vm.depart = res.p_title
               vm.position = res.rubPositionVO.name
 					} else {
-//            Toast(response.data.errmsg)
-
+          //  Toast(response.data.errmsg)
           }
 				})
       }

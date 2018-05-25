@@ -6,7 +6,6 @@
   				<header class="mui-bar mui-bar-nav forget-btn-back">
 			        <a href="javascript:;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			        <h1 class="mui-title">密码服务</h1>
-
 			    </header>
 			    <div class="mui-content mui-scroll-wrapper">
 			    	<div class="mui-scroll">
@@ -57,208 +56,213 @@
 </template>
 
 <script>
-//  import './login.css'
 import copyRight from '../common/copyRight.vue'
 import ModifyPwd from './ModifyPwd'
-import { Toast } from 'mint-ui';
-  export default {
-    name: 'forget',
-    install: function () {
-      Vue.component(this.name, this)
+import { Toast } from 'mint-ui'
+export default {
+  name: 'forget',
+  install: function() {
+    Vue.component(this.name, this)
+  },
+  data() {
+    return {
+      scid: sessionStorage.scid,
+      codeMsg: '获取验证码',
+      codeCount: 0,
+      isPassword: false,
+      form: {
+        realname: '',
+        phone: '',
+        code: '',
+        new_pw: ''
+      },
+      isRead: true,
+      popupVisible: false
+    }
+  },
+  components: {
+    copyRight,
+    ModifyPwd
+  },
+  mounted() {},
+  methods: {
+    open() {
+      this.popupVisible = true
     },
-    data () {
-      return {
-				scid: sessionStorage.scid,
-      	codeMsg:'获取验证码',
-      	codeCount: 0,
-      	isPassword: false,
-        form: {
-					realname: '',
-					phone: '',
-					code: '',
-					new_pw: ''
-				},
-				isRead: true,
-				popupVisible: false
+    /* 用户协议确定 */
+    isChecked(e) {
+      this.isRead = e.target.checked
+    },
+    isStringEmpty(string) {
+      if (string.length === 0) {
+        return true
       }
+      return false
     },
-    components: {
-			copyRight,
-			ModifyPwd
-    },
-    methods: {
-			open () {
-				this.popupVisible = true
-			},
-    	/* 用户协议确定 */
-			isChecked (e) {
-				this.isRead = e.target.checked
-			},
-			isStringEmpty(string) {
-				if (string.length === 0) {
-					return true
-				}
-				return false
-			},
-			resetPassword () {
-				let _this = this
-				if (!_this.isRead) {
-          Toast('请先阅读修改密码协议')
-					return
-				}
-				if (_this.isStringEmpty(_this.form.realname) ||
-					_this.isStringEmpty(_this.form.phone) ||
-					_this.isStringEmpty(_this.form.new_pw) ||
-					_this.isStringEmpty(_this.form.code)) {
-          Toast('请填写完注册信息')
+    resetPassword() {
+      let _this = this
+      if (!_this.isRead) {
+        Toast('请先阅读修改密码协议')
+        return
+      }
+      if (
+        _this.isStringEmpty(_this.form.realname) ||
+        _this.isStringEmpty(_this.form.phone) ||
+        _this.isStringEmpty(_this.form.new_pw) ||
+        _this.isStringEmpty(_this.form.code)
+      ) {
+        Toast('请填写完注册信息')
 
-          return
-				}
-				if (_this.codeMsg === '获取验证码') {
-          Toast('请填获取短信验证码')
+        return
+      }
+      if (_this.codeMsg === '获取验证码') {
+        Toast('请填获取短信验证码')
 
-          return
-				}
-				const encryptedPwd = _this.encrypt()
-				const obj = {
-					...this.form
-				}
-				obj.new_pw = encryptedPwd
-				_this.$api.post(_this.config.baseserverURI + _this.config.basic.resetPassword, {scid : _this.scid, ...obj})
-				.then(function (response) {
-					if (response.data.errcode === '0000') {
+        return
+      }
+      const encryptedPwd = _this.encrypt()
+      const obj = {
+        ...this.form
+      }
+      obj.new_pw = encryptedPwd
+      _this.$api
+        .post(_this.config.baseserverURI + _this.config.basic.resetPassword, {
+          scid: _this.scid,
+          ...obj
+        })
+        .then(function(response) {
+          if (response.data.errcode === '0000') {
             Toast('修改成功')
 
-            _this.$router.push({path: '/login'})
-					}
-				})
-				.catch(function (error) {
-					// console.log(error)
-				})
-			},
-			/* 密码加密 */
-			encrypt(string) {
-				const pubkey = this.config.basic.key
-				try {
-					let content = this.form.new_pw
-					let crypt = new window.JSEncrypt()
-					crypt.setKey(pubkey)
-					let crypted = crypt.encrypt(content)
-					return crypted
-				} catch (ex) {
-					return false
-				}
-			},
-    	getCode: function() {
-				let _this = this
+            _this.$router.push({ path: '/login' })
+          }
+        })
+        .catch(function(error) {
+          // console.log(error)
+        })
+    },
+    /* 密码加密 */
+    encrypt(string) {
+      const pubkey = this.config.basic.key
+      try {
+        let content = this.form.new_pw
+        let crypt = new window.JSEncrypt()
+        crypt.setKey(pubkey)
+        let crypted = crypt.encrypt(content)
+        return crypted
+      } catch (ex) {
+        return false
+      }
+    },
+    getCode: function() {
+      let _this = this
 
-        if (_this.codeCount > 0) {
-          Toast('请稍后获取验证码')
-          return
-        }
+      if (_this.codeCount > 0) {
+        Toast('请稍后获取验证码')
+        return
+      }
 
-				if (_this.form.phone.length === 0) {
-          Toast('请先填写手机号码与账号')
+      if (_this.form.phone.length === 0) {
+        Toast('请先填写手机号码与账号')
 
-          return
-				}
-				if(!(/^1[3|4|5|7|8]\d{9}$/.test(_this.form.phone))){
-					mui.alert('不是正确的11位手机号','消息','确定')
-					return
-				}
-				this.$api.get(this.config.baseserverURI + this.config.basic.loginMail,{
-					phone : _this.form.phone,
-					scid : _this.scid
+        return
+      }
+      if (!/^1[3|4|5|7|8]\d{9}$/.test(_this.form.phone)) {
+        mui.alert('不是正确的11位手机号', '消息', '确定')
+        return
+      }
+      this.$api
+        .get(this.config.baseserverURI + this.config.basic.loginMail, {
+          phone: _this.form.phone,
+          scid: _this.scid
           // username : _this.form.username
         })
-				.then(function (response) {
-					if (response.data.errcode === '0000') {
+        .then(function(response) {
+          if (response.data.errcode === '0000') {
             Toast('验证码发送成功')
-
           }
-				})
-				.catch(function (error) {
-					// console.log(error)
-				})
-    		if (_this.codeMsg === '获取验证码' || _this.codeMsg === '重新获取'){
-    			_this.codeCount = 60
-    			var inter = setInterval(function(){
-    				if(_this.codeCount == 0){
-    					_this.codeMsg = '重新获取'
-    					clearInterval(inter)
-    					return
-    				}
-    				_this.codeCount --
-    				_this.codeMsg = _this.codeCount + 's后获取'
-    			},1000)
-
-    		}
-    	},
-			back: function() {
-				this.$router.back()
-			}
+        })
+        .catch(function(error) {
+          // console.log(error)
+        })
+      if (_this.codeMsg === '获取验证码' || _this.codeMsg === '重新获取') {
+        _this.codeCount = 60
+        var inter = setInterval(function() {
+          if (_this.codeCount == 0) {
+            _this.codeMsg = '重新获取'
+            clearInterval(inter)
+            return
+          }
+          _this.codeCount--
+          _this.codeMsg = _this.codeCount + 's后获取'
+        }, 1000)
+      }
+    },
+    back: function() {
+      this.$router.back()
     }
   }
-//  import './login.css';
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-	.forget-form-box{
-  	margin-top: 13px;
-  	margin-bottom: 5px;
+.forget-form-box {
+  margin-top: 13px;
+  margin-bottom: 5px;
+}
+.forget-btn-back .mui-icon {
+  /*padding-top: 15px;*/
+  /*font-size: 13px;*/
+}
+.forget-btn-getCode {
+  height: 40px;
+  padding-top: 0;
+}
+.forget-btn-getCode .mui-btn {
+  width: 100px;
+  margin-top: -39px;
+  margin-right: 9px;
+  position: absolute;
+  top: 40px;
+  right: 0px;
+}
+.forget-switch-password {
+  width: 75px;
+  margin-top: -36px;
+  margin-right: 9px;
+  position: absolute;
+  top: 42px;
+  right: 30px;
+}
+.forget-btn-loginBtn {
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 0.2667rem;
+  padding: 0.2667rem 0;
+}
+.forget-checked-box.mui-left input[type='checkbox'],
+.forget-checked-box.mui-left input[type='radio'] {
+  left: 17%;
+}
+.forget-checked-box {
+  label {
+    text-align: center;
   }
- .forget-btn-back .mui-icon{
- 	/*padding-top: 15px;*/
- 	/*font-size: 13px;*/
- }
- .forget-btn-getCode{
- 	height:40px;
- 	padding-top: 0;
- }
- .forget-btn-getCode .mui-btn{
-  	width: 100px;
-    margin-top: -39px;
-    margin-right: 9px;
-   position: absolute;
-   top: 40px;
-   right: 0px;
-  }
- .forget-switch-password{
-  	width: 75px;
-    margin-top: -36px;
-    margin-right: 9px;
-   position: absolute;
-   top: 42px;
-   right: 30px;
-  }
-  .forget-btn-loginBtn{
-  	width: 90%;
-    margin: 0 auto;
-    margin-top: 10px;
-    padding: 10px 0;
-  }
-  .forget-checked-box.mui-left input[type=checkbox], .forget-checked-box.mui-left input[type=radio]{
-  	left: 17%;
-  }
-  .forget-checked-box{
-    label{
-      text-align: center;
-    }
-	}
-	.a-link {
-		position: absolute;
-		top: .2rem;
-    right: .1rem;
-	}
-	.mui-off-canvas-wrap .mui-bar {
-    position: absolute!important;
-    -webkit-transform: translate3d(0,0,0);
-    transform: translate3d(0,0,0);
-    -webkit-box-shadow: 0 1px 6px #ccc;
-    box-shadow: 0 1px 6px #ccc;
-	}
-	.forget-btn-back .mui-icon[data-v-5bf1ce18] {
-    padding-top: 10px;
-	}
+}
+.a-link {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.1rem;
+}
+.mui-off-canvas-wrap .mui-bar {
+  position: absolute !important;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-box-shadow: 0 1px 6px #ccc;
+  box-shadow: 0 1px 6px #ccc;
+}
+.forget-btn-back .mui-icon[data-v-5bf1ce18] {
+  padding-top: 0.2667rem;
+}
 </style>

@@ -63,7 +63,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: 'https://scplugins.oss-cn-shenzhen.aliyuncs.com/plugins/app/nhpf-score/',
     // assetsPublicPath: 'https://scplugins.oss-cn-shenzhen.aliyuncs.com/plugins/app/share/',
 
     /**

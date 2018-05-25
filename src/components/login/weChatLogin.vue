@@ -17,23 +17,15 @@
               </div>
               <div class="login-btn">
                 <button @tap="login(1)" type="button" class="mui-btn mui-btn-success mui-btn-block">
-                  <img src="../../assets/images/weixin.png"/>
-
                   一键微信登录
                 </button>
                 <button @tap="login(2)" type="button" class="mui-btn mui-btn-primary mui-btn-block">
-                  <img src="../../assets/images/shoujihao.png"/>
-
                   输入密码登录
                 </button>
                 <!--<a @tap="login(1)" href="javascript:;" class="nowLogin">-->
-
-                  <!--<img src="../../assets/images/weixin.png"/>-->
                   <!--<span>一键微信登录</span>-->
                 <!--</a>-->
                 <!--<a @tap="login(2)" href="javascript:;" class="nowLogin">-->
-
-                  <!--<img src="../../assets/images/shoujihao.png"/>-->
                   <!--<span>输入密码登录</span>-->
                 <!--</a>-->
 

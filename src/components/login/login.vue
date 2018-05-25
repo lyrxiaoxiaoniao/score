@@ -89,7 +89,6 @@
       copyRight, loading
     },
     mounted: function() {
-
       this.isLogin()
 
     },
@@ -99,7 +98,7 @@
         let v = this
         v.loadingData = true
 
-        v.$api.get(v.config.baseserverURI + v.config.getWxConfigAPI) // 做这部请求是为了让wx接口先行，来获取正常的个人信息
+        v.$api.get(v.config.baseserverURI + v.config.getWXAPi) // 做这部请求是为了让wx接口先行，来获取正常的个人信息
           .then(function (res) {
             v.$api.get(v.config.baseserverURI + v.config.getAdminUserCurrentAPI)
               .then(function (json) {
@@ -295,7 +294,6 @@
 			}
     }
   }
-//  import './login.css';
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -303,7 +301,6 @@
 	#login {
 		height: 100%;
 	}
- /*@import '../../assets/css/login.css';*/
   .login-form-box{
   	margin-top: 13px;
   	margin-bottom: 5px;
@@ -317,7 +314,7 @@
     margin-top: -39px;
     margin-right: 9px;
     position: absolute;
-    top: 42px;
+    top: 40px;
     right: 0px;
   }
   .login-btn-loginBtn{

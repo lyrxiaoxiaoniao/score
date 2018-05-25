@@ -2,7 +2,6 @@
   <div id="g_send">
     <input type="file" class="upImg" id="upload" @change="upload" accept="image/*">
     <loading :is-show="loadingData"></loading>
-
   </div>
 </template>
 
@@ -13,10 +12,16 @@
 
   export default {
     name: 'g_send',
+    props: {
+      fileURL: {
+        type: String,
+        default: '/api/files/create'
+      }
+    },
     data () {
       return {
         loadingData: false,
-        fileUrl: this.config.baseserverURI + this.config.getImgUrlAPI,
+        // fileUrl: this.config.baseserverURI + this.config.getImgUrlAPI,
 
         headerImage:'',
         picValue:'',
@@ -111,7 +116,8 @@
             'Content-Type': 'multipart/form-data'  //之前说的以表单传数据的格式来传递fromdata
           }
         };
-        vm.$api.post(vm.config.baseserverURI + vm.config.getImgUrlAPI, fd, config).then( (res) => {
+        // vm.$api.post(vm.config.baseserverURI + vm.config.getImgUrlAPI, fd, config).then( (res) => {
+        vm.$api.post(vm.fileURL, fd, config).then( (res) => {
           vm.loadingData = false
 
           //做处理\
@@ -250,7 +256,7 @@
 <style scoped lang="less">
   #g_send {
     position: relative;
-    top: -1.9rem;
+    // top: -1.9rem;
     #upload{
       width: 100%;
       height: 1.9rem;

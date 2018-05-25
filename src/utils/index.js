@@ -3,7 +3,7 @@
 class Storage {
   constructor() {
     this.storage = window.localStorage
-    this.prefix = 'dsxw_'
+    this.prefix = 'pfxt_'
   }
 
   set(key, value, fun) {
