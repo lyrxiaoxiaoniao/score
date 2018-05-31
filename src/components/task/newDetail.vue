@@ -1,53 +1,53 @@
 <template>
   <div class="newdetail">
     <mt-header fixed title="考核扣分">
-      <mt-button icon="back" slot="left"></mt-button>
+      <mt-button @click="toBack" icon="back" slot="left"></mt-button>
     </mt-header>
     <div class="newdetail-view">
       <div class="newdetail-view-item">
         <h3>考核类别：</h3>
-        <p>环境卫生</p>
+        <p>{{formData.type}}</p>
       </div>
       <div class="newdetail-view-item">
         <h3>考核内容：</h3>
-        <p>无违反规划新增私搭乱建，无擅自改变房屋用途现象（2分）</p>
+        <p>{{formData.item.content}}（{{formData.item.score}}分）</p>
       </div>
       <div class="newdetail-view-item">
         <h3>考核标注：</h3>
-        <p>有新建的，修改的扣2分</p>
+        <p>{{formData.item.standard}} ({{formData.item.deducte}}分)</p>
       </div>
       <div class="newdetail-view-koufen">
-        <span class="newdetail-view-koufen_left">当前扣分：0分</span>
+        <span class="newdetail-view-koufen_left">当前扣分：{{deltaData}}分</span>
         <!-- <span class="newdetail-view-koufen_right">扣分</span> -->
       </div>
 
       <div class="newdetail-view-content">
 
-        <div @click="toEdit" class="newdetail-view-content-item">
+        <div @click="toEdit(item)" v-for="item in dataList" :key="item.id" class="newdetail-view-content-item">
           <i></i>
           <div class="item-left">
-            <img src="static/images/task/icon_upload.png" alt="">
+            <img :src="item.resources[0].remoteUrl" alt="">
           </div>
           <div class="item-right">
-            <h3>扣分：0.5</h3>
+            <h3>扣分：{{item.delta}}</h3>
             <h3>扣分原因：</h3>
-            <p>广告牌尺寸过于庞大，影响整体统一美观，并且破损严重，不但有漏电隐患，还有可能引发火灾。。。。。</p>
+            <p>{{item.content}}</p>
           </div>
         </div>
 
-        <div @click="toEdit" class="newdetail-view-content-item">
+        <div v-show="itemLeagth" @click="toEdit" v-for="item in itemLeagth" :key="item" class="newdetail-view-content-item">
           <i></i>
           <div class="item-left">
             <img src="static/images/task/icon_upload.png" alt="">
           </div>
           <div class="item-right">
-            <h3>扣分：0.5</h3>
+            <h3>扣分：{{normalData.delta}}</h3>
             <h3>扣分原因：</h3>
-            <p>广告牌尺寸过于庞大，影响整体统一美观，并且破损严重，不但有漏电隐患，还有可能引发火灾。。。。。</p>
+            <p>{{normalData.content}}</p>
           </div>
         </div>
 
-        <div @click="toEdit" class="newdetail-view-content-item">
+        <!-- <div @click="toEdit" class="newdetail-view-content-item">
           <i></i>
           <div class="item-left">
             <img src="static/images/task/icon_upload.png" alt="">
@@ -57,24 +57,96 @@
             <h3>扣分原因：</h3>
             <p>广告牌尺寸过于庞大，影响整体统一美观，并且破损严重，不但有漏电隐患，还有可能引发火灾。。。。。</p>
           </div>
-        </div>
+        </div> -->
 
       </div>
 
     </div>
-    <div class="newdetail-btn">确定</div>
+    <!-- <div class="newdetail-btn">确定</div> -->
+    <copy-right></copy-right>
   </div>
 </template>
 
 <script>
+import copyRight from '../common/copyRight'
 export default {
   name: 'newdetail',
   data() {
-    return {}
+    return {
+      formData: {
+        type: this.$route.query.name || '',
+        item: JSON.parse(sessionStorage.getItem('itemDetail')) || ''
+      },
+      dataList: [],
+      // normalList: [],
+      normalData: {
+        content: JSON.parse(sessionStorage.getItem('itemDetail')).standard,
+        delta: JSON.parse(sessionStorage.getItem('itemDetail')).deducte
+      },
+      param: {
+        tcId: JSON.parse(sessionStorage.getItem('tcId')) || null,
+        itemId: this.$route.query.itemId || null,
+        size: 10,
+        page: 0,
+        key: ''
+      }
+    }
+  },
+  components: { copyRight },
+  computed: {
+    itemLeagth() {
+      let data = JSON.parse(sessionStorage.getItem('itemDetail')) || null
+      return (data ? data.score / data.deducte : 0) - this.dataList.length
+    },
+    deltaData() {
+      // 测试
+      // let arr = [
+      //   { score: 1, id: 1 },
+      //   { score: 1, id: 2 },
+      //   { score: 1, id: 3 },
+      //   { score: 1, id: 4 }
+      // ]
+      // const newData = arr.reduce((total, item) => total + item.score, 0)
+      // console.log(this.deltaData)
+      // 测试
+      return this.dataList.reduce((total, item) => total + item.delta, 0)
+    }
+  },
+  mounted() {
+    this.getList()
   },
   methods: {
-    toEdit() {
-      this.$router.push('/adddetail')
+    toBack() {
+      if (this.$store.state.routerchange) {
+        this.$router.back()
+      } else {
+        this.$router.replace('/')
+      }
+    },
+    getList() {
+      this.$api
+        .get(this.config.baseserverURI + this.config.score.index, this.param)
+        .then(res => {
+          if (res.data.errcode === '0000') {
+            let response = res.data.data
+            this.dataList = response
+            console.log(this.dataList, '123')
+          }
+        })
+    },
+    toEdit(item) {
+      if (item) {
+        const newData = { content: item.content, images: item.resources }
+        sessionStorage.setItem('MatterDetail', JSON.stringify(newData))
+      }
+      this.$router.push({
+        path: '/adddetail',
+        query: {
+          itemId: this.$route.query.itemId,
+          id: item.id,
+          deducte: JSON.parse(sessionStorage.getItem('itemDetail')).deducte
+        }
+      })
     }
   }
 }

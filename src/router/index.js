@@ -66,7 +66,7 @@ let routers = [
     name: 'adddetail',
     component: () => import('../components/task/addDetail.vue')
   },
-  // 查看详情考核任务多项目扣分
+  // 查看详情考核任务多项目扣分 全部提交完成显示页面
   {
     path: '/editdetail',
     name: 'editdetail',

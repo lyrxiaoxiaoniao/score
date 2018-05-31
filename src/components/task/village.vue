@@ -1,7 +1,7 @@
 <template>
   <div class="village">
     <mt-header fixed title="考核记录">
-      <mt-button icon="back" slot="left"></mt-button>
+      <mt-button @click="toBack" icon="back" slot="left"></mt-button>
     </mt-header>
     <div class="village-tab">
       <div @tap="handclick(0)" class="village-tab-item" :class="{'active' : isFocus === 0}">
@@ -45,11 +45,11 @@
             <p class="content-text-memo"> <i class="mui-icon mui-icon-phone"></i> {{item.community.phone}}</p>
           </div>
           <div @click="toDetail(item)" class="content-badge">
-            <div :class="item.userAccessStatus ? 'badge-item-blue' : 'badge-item-red'">
-              <i></i>{{item.userAccessStatus ? '考核详情' : '马上考核'}}
+            <div :class="item.userAccessStatus ? (item.userAccessStatus === 1 ? 'badge-item-red' : 'badge-item-blue') : 'badge-item-red'">
+              <i></i>{{item.userAccessStatus ? (item.userAccessStatus === 1 ? '正在考核' : '考核详情') : '马上考核'}}
             </div>
           </div>
-          <i :class="item.userAccessStatus ? 'content-rate-blue' : 'content-rate-red'"></i>
+          <i :class="item.userAccessStatus ? (item.userAccessStatus === 1 ? 'content-rate-red2' : 'content-rate-blue') : 'content-rate-red'"></i>
         </div>
 
       </div>
@@ -91,13 +91,20 @@ export default {
     this.getList()
   },
   methods: {
+    toBack() {
+      if (this.$store.state.routerchange) {
+        this.$router.back()
+      } else {
+        this.$router.replace('/')
+      }
+    },
     toDetail(item) {
       sessionStorage.setItem('communityDetail', JSON.stringify(item))
+      sessionStorage.setItem('tcId', JSON.stringify(item.id))
       this.$router.push({
         path: '/edittask',
         query: { communityId: item.id }
       })
-
     },
     loadBottom() {
       this.getList('down')
@@ -163,7 +170,7 @@ export default {
               this.dataList = res.data.data
             }
           }
-          console.log(this.dataList)
+          // console.log(this.dataList)
         })
     }
   }
@@ -269,7 +276,7 @@ export default {
         &-memo {
           font-size: 0.3467rem;
           color: rgb(102, 102, 102);
-          i{
+          i {
             font-size: 15px;
           }
         }
@@ -287,6 +294,16 @@ export default {
         width: 1.1733rem;
         height: 1.1733rem;
         background: url('../../../static/images/task/img_daikaohe.png')
+          no-repeat center/cover;
+      }
+      .content-rate-red2 {
+        position: absolute;
+        display: inline-block;
+        top: 0;
+        right: -0.2667rem;
+        width: 1.1733rem;
+        height: 1.1733rem;
+        background: url('../../../static/images/task/img_kaohezhong.png')
           no-repeat center/cover;
       }
       .content-rate-blue {

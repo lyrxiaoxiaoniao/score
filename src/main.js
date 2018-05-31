@@ -17,7 +17,9 @@ import utils from './utils/index'
 // 公共全局组件
 // import LToast from './components/globel/Ltoast/index.js'
 // Vue.use(LToast)
-
+// 点位标识配置文件
+import slug from './slug'
+Vue.prototype.$slug = slug
 // 全局公共方法
 Vue.prototype.common = common
 Vue.prototype.$api = api

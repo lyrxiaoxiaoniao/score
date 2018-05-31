@@ -1,7 +1,7 @@
 <template>
   <div class="task">
     <mt-header fixed title="考核任务">
-      <mt-button icon="back" slot="left"></mt-button>
+      <mt-button @click="toBack" icon="back" slot="left"></mt-button>
     </mt-header>
     <div class="task-tab">
       <div @tap="handclick(0)" class="task-tab-item" :class="{'active' : isFocus === 0}">
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import copyRight from '../common/copyRight.vue'
 import notData from '../common/notData.vue'
 import loading from '../common/loading.vue'
@@ -69,6 +70,13 @@ export default {
     this.getList()
   },
   methods: {
+    toBack() {
+      if (this.$store.state.routerchange) {
+        this.$router.back()
+      } else {
+        this.$router.replace('/')
+      }
+    },
     loadBottom() {
       this.getList('down')
       this.$refs.loadmore.onBottomLoaded()
@@ -90,6 +98,7 @@ export default {
         this.getList()
       }
     },
+    // 重置
     getDefaultPsram() {
       this.param = {
         size: 10,
@@ -100,6 +109,7 @@ export default {
     },
     toEditTask(data) {
       sessionStorage.setItem('taskDetail', JSON.stringify(data))
+      sessionStorage.setItem('taskId', data.id)
       this.$router.push({
         path: '/village',
         query: { taskId: data.id }
@@ -114,7 +124,7 @@ export default {
         this.param.page += 1
       }
       this.$api
-        .get(this.config.baseserverURI + this.config.task.list, this.param)
+        .get(this.config.baseserverURI + this.config.task.list, {...this.param})
         .then(res => {
           if (res.data.errcode === '0000') {
             this.loadingData = false

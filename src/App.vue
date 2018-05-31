@@ -9,7 +9,12 @@ export default {
   name: 'app',
   data() {
     return {}
-  }
+  },
+  watch: {
+    '$route': function () {
+      this.$store.state.routerchange = true
+    }
+  },
 }
 </script>
 

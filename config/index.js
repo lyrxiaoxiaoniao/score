@@ -11,13 +11,13 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/hxapijava': {
-        target: 'http://121.42.231.1:8080',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/hxapijava': '/hxapijava'
-        }
-      }
+      // '/hxapijava': {
+      //   target: 'http://121.42.231.1:8080',
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/hxapijava': '/hxapijava'
+      //   }
+      // }
     },
 
     // Various Dev Server settings

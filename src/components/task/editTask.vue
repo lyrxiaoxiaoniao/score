@@ -1,41 +1,48 @@
 <template>
   <div class="edittask">
     <mt-header fixed title="物业服务企业考核">
-      <mt-button icon="back" slot="left"></mt-button>
-      <mt-button slot="right">提交</mt-button>
+      <mt-button @click="toBack" icon="back" slot="left"></mt-button>
+      <mt-button @click="onSubmit" slot="right">提交</mt-button>
     </mt-header>
     <div class="edittask-header">
       <div class="edittask-header_img">
         <img src="http://placehold.it/36x36" alt="">
       </div>
       <div class="edittask-header_text">
-        <p>考核任务：2018年4月到5月份考核</p>
-        <p>考核小区：鑫源小区</p>
+        <p>考核任务：{{communityDetail.task.name}}</p>
+        <p>考核小区：{{communityDetail.community.name}}</p>
       </div>
     </div>
-    <ul class="mui-table-view">
-        <li class="mui-table-view-cell mui-collapse">
-            <a class="mui-navigate-right" href="#">环境卫生（20分）</a>
-            <div class="mui-collapse-content">
+    <ul v-show="dataList" class="mui-table-view">
+        <li v-for="rules in dataList" :key="rules.id" class="mui-table-view-cell mui-collapse">
+          <a class="mui-navigate-right" href="#">{{rules.displayName}}</a>
+          <div class="mui-collapse-content">
 
-              <div class="edittask-view">
-                <div class="edittask-view-item">
-                  <h3>考核内容：</h3>
-                  <p>无违反规划新增私搭乱建，无擅自改变房屋用途现象（2分）</p>
-                </div>
-                <div class="edittask-view-item">
-                  <h3>考核标注：</h3>
-                  <p>有新建的，修改的扣2分</p>
-                </div>
-                <div class="edittask-view-footer">
-                  <span class="edittask-view-footer_left">当前扣分：2分</span>
-                  <span @click="koufen" class="edittask-view-footer_right">扣分</span>
-                </div>
+            <div v-show="rules.items.length" v-for="item in rules.items" :key="item.id" class="edittask-view">
+              <div class="edittask-view-item">
+                <h3>考核内容：</h3>
+                <!-- <p>无违反规划新增私搭乱建，无擅自改变房屋用途现象（2分）</p> -->
+                <p>{{item.content}} ({{item.score}}分)</p>
               </div>
-
+              <div class="edittask-view-item">
+                <h3>考核标注：</h3>
+                <!-- <p>有新建的，修改的扣2分</p> -->
+                <p>{{item.standard}} ({{item.deducte}}分)</p>
+              </div>
+              <div class="edittask-view-footer">
+                <span class="edittask-view-footer_left">当前扣分：0分</span>
+                <span @click="koufen(item, rules.displayName)" class="edittask-view-footer_right">扣分</span>
+              </div>
             </div>
+
+            <div v-show="!rules.items.length" class="edittask-view">
+              暂无考核内容！
+            </div>
+
+          </div>
         </li>
-        <li class="mui-table-view-cell mui-collapse">
+
+        <!-- <li class="mui-table-view-cell mui-collapse">
             <a class="mui-navigate-right" href="#">安全管理（20分）</a>
             <div class="mui-collapse-content">
 
@@ -97,7 +104,8 @@
               </div>
 
             </div>
-        </li>
+        </li> -->
+
     </ul>
   </div>
 </template>
@@ -105,9 +113,48 @@
 <script>
 export default {
   name: 'edittask',
+  data() {
+    return {
+      communityDetail:
+        JSON.parse(sessionStorage.getItem('communityDetail')) || null,
+      dataList: null,
+      param: {
+        taskId: sessionStorage.getItem('taskId'),
+        status: 1,
+        size: 1000,
+        page: 0,
+        key: ''
+      }
+    }
+  },
+  mounted() {
+    this.getCategoryList()
+  },
   methods: {
-    koufen() {
-      this.$router.push('/newdetail')
+    toBack() {
+      if (this.$store.state.routerchange) {
+        this.$router.back()
+      } else {
+        this.$router.replace('/')
+      }
+    },
+    onSubmit() {},
+    koufen(item, name) {
+      sessionStorage.setItem('itemDetail', JSON.stringify(item))
+      this.$router.push({
+        path: '/newdetail',
+        query: { itemId: item.id, name: name }
+      })
+    },
+    getCategoryList() {
+      this.$api
+        .get(this.config.baseserverURI + this.config.task.class, this.param)
+        .then(res => {
+          if (res.data.errcode === '0000') {
+            console.log(res.data.data, '123123')
+            this.dataList = res.data.data.content
+          }
+        })
     }
   }
 }

@@ -126,7 +126,8 @@
             // vm.textss = '上传成功'
             Toast('上传成功')
             // vm.images.push(res.data.data[0])
-            vm.$emit('primary-imgUrl', res.data.data[0])
+            vm.$emit('primary-imgUrl', res.data.data) // 返回id对象
+            // vm.$emit('primary-imgUrl', res.data.data[0])
           }else {
             // Toast(res.data.errmsg)
             // vm.textss = '上传失败'

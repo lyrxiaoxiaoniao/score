@@ -1,31 +1,28 @@
 <template>
   <div class="adddetail">
     <mt-header fixed title="考核扣分">
-      <mt-button icon="back" slot="left"></mt-button>
+      <mt-button @click="toBack" icon="back" slot="left"></mt-button>
     </mt-header>
     <div class="adddetail-view">
       <div class="adddetail-view-item">
-        <h3>扣分分值：2</h3>
+        <h3>扣分分值：{{deducte}}分</h3>
         <p>问题描述：</p>
-        <textarea cols="30" rows="5"></textarea>
+        <textarea v-model="form.content" cols="30" rows="5"></textarea>
       </div>
 
       <div class="adddetail-view-upload">
         <h3>图片证明：</h3>
         <div class="adddetail-view-upload-img">
-          <div class="upload-img">
+          <div v-for="(image, index) in resourceImages" :key="index" class="upload-img">
+            <i @click="imgRemove(image, index)"></i>
+            <!-- <img src="http://placehold.it/70x70" alt=""> -->
+            <img :src="image" alt="">
+          </div>
+          <!-- <div class="upload-img">
             <i @click="imgRemove"></i>
             <img src="http://placehold.it/70x70" alt="">
-          </div>
-          <div class="upload-img">
-            <i @click="imgRemove"></i>
-            <img src="http://placehold.it/70x70" alt="">
-          </div>
-          <div class="upload-img">
-            <i @click="imgRemove"></i>
-            <img src="http://placehold.it/70x70" alt="">
-          </div>
-          <div class="upload-img">
+          </div> -->
+          <div class="upload-img" v-show="resourceImages.length < max">
             <uploadimg class="showimg" :fileURL="uploadUrl" @primary-imgUrl="getImgUrl"></uploadimg>
           </div>
         </div>
@@ -33,25 +30,91 @@
       </div>
     </div>
     <div class="adddetail-btn">
-      <div class="adddetail-btn-cancel">取消</div>
-      <div class="adddetail-btn-confirm">确定</div>
+      <div @click="toBack" class="adddetail-btn-cancel">取消</div>
+      <div @click="onSubmit" class="adddetail-btn-confirm">确定</div>
     </div>
+    <copy-right></copy-right>
+    <loading :is-show="loadingData"></loading>
   </div>
 </template>
 
 <script>
 import uploadimg from '../common/uploadimg.vue'
+import copyRight from '../common/copyRight'
+import loading from '../common/loading'
+import { Toast } from 'mint-ui'
 export default {
   name: 'adddetail',
   data() {
     return {
-      uploadUrl: this.config.baseserverURI + this.config.getImgUrlAPI
+      uploadUrl: this.config.baseserverURI + this.config.newUploadFilesAPI,
+      // uploadUrl: this.config.baseserverURI + this.config.getImgUrlAPI,
+      deducte: this.$route.query.deducte || '',
+      id: this.$route.query.id || '',
+      form: {
+        content: '',
+        resourceIds: [],
+        tcId: JSON.parse(sessionStorage.getItem('tcId')) || '',
+        itemId: this.$route.query.itemId || ''
+      },
+      resourceImages: [],
+      max: 3,
+      loadingData: false
     }
   },
-  components: { uploadimg },
+  components: { uploadimg, copyRight, loading },
+  mounted() {
+    // 修改的时候获取默认信息
+    this.getDefault()
+  },
   methods: {
-    imgRemove() {},
-    getImgUrl() {}
+    toBack() {
+      if (this.$store.state.routerchange) {
+        this.$router.back()
+      } else {
+        this.$router.replace('/')
+      }
+    },
+    imgRemove(image, index) {
+      this.form.resourceIds.splice(index, 1)
+      this.resourceImages.splice(index, 1)
+    },
+    getImgUrl(val) {
+      this.form.resourceIds.push(val.id)
+      this.resourceImages.push(val.remoteUrl)
+    },
+    onSubmit() {
+      let URL = this.config.baseserverURI + this.config.score.add
+      if (this.id) {
+        URL = this.config.baseserverURI + this.config.score.update
+        this.form.id = this.id
+      }
+      this.loadingData = true
+      this.$api.post(URL, this.form).then(res => {
+        if (res.data.errcode === '0000') {
+          this.loadingData = false
+          Toast({
+            message: '操作成功',
+            position: 'top',
+            duration: 1000
+          })
+          setTimeout(() => {
+            this.toBack()
+          }, 500)
+        }
+      })
+    },
+    // 如果是修改详情
+    getDefault() {
+      const defaultData = JSON.parse(sessionStorage.getItem('MatterDetail'))
+      this.form.content = defaultData.content
+      this.resourceImages = defaultData.images.map(v => {
+        return v.remoteUrl
+      })
+      this.form.resourceIds = defaultData.images.map(v => {
+        return v.id
+      })
+    }
   }
 }
 </script>

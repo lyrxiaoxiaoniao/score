@@ -1,10 +1,11 @@
 export default {
-  baseserverURI: '',
+  baseserverURI: 'http://192.168.1.13:8080',
   // baseserverURI: '',
   // baseserverURI: 'https://tstgov.shencom.cn',
   // baseserverURI: 'https://gov.shencom.cn',
   getWXAPi: '/wx/config/show', // 获取微信配置
   getImgUrlAPI: '/api/files/create', // 上传图片接口
+  newUploadFilesAPI: '/api/files/create/detail', // 带id上传图片接口
   getAdminUserCurrentAPI: '/admin/user/current', // 个人信息
   getUsrUserinfoShowAPI: '/wx/usr/userinfo/show', // 获取当前用户信息
   getAdminExtConfigAPI: '/admin/ext/config', // 版权信息
@@ -35,11 +36,22 @@ export default {
     refresh: '/mobile/rubbish/user/user', // 重置密码
     signout: '/sys/logout' // 退出登录
   },
+  // cms接口
+  getNcmsCategoryIndexAPI : '/wx/ncms/category/index',// 栏目列表 Byte is_recommend;// 1->当前用户的推荐栏目
+  getNcmsArticleIndexAPI : '/wx/ncms/article/index',// 文章列表(最新,推荐)  Byte is_recommend;//是否推荐 0 1
+  getNcmsArticleShowAPI : '/wx/ncms/article/show',// 文章详情
   // 南湖评分接口
   task: {
     // 获取当前用户的任务/小区/评分列表。传taskId的值获取任务的小区列表，否则获取任务列表
     list: '/wx/fn/asm/tc/index',
     // 小区考核分类列表
     class: '/wx/fn/asm/category/index'
+  },
+  score: {
+    // 评分详情列表
+    index: '/wx/fn/asm/ad/index',
+    add: '/wx/fn/asm/ad/create', // 创建扣分项
+    show: '/wx/fn/asm/ad/show', // 扣分项详情
+    update: '/wx/fn/asm/ad/update', // 修改扣分项
   }
 }

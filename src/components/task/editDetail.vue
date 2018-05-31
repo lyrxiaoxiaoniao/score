@@ -3,7 +3,7 @@
     <mt-header fixed title="考核记录">
       <mt-button icon="back" slot="left"></mt-button>
     </mt-header>
-    <div class="editdetail-tab">
+    <!-- <div class="editdetail-tab">
       <div @tap="handclick(1)" class="editdetail-tab-item" :class="{'active' : isFocus === 1}">
         <span>全部</span>
       </div>
@@ -13,7 +13,7 @@
       <div @tap="handclick(3)" class="editdetail-tab-item" :class="{'active' : isFocus === 3}">
         <span>已完成</span>
       </div>
-    </div>
+    </div> -->
 
     <div>
       <div class="editdetail-header">
@@ -27,123 +27,81 @@
       </div>
       <ul class="mui-table-view">
         <li class="mui-table-view-cell mui-collapse">
-            <a class="mui-navigate-right" href="#">环境卫生（20分）</a>
-            <div class="mui-collapse-content">
+          <a class="mui-navigate-right" href="#">环境卫生（20分）</a>
+          <div class="mui-collapse-content">
 
-              <div class="editdetail-view">
-                <div class="editdetail-view-item">
-                  <h3>考核内容：</h3>
-                  <p>无违反规划新增私搭乱建，无擅自改变房屋用途现象（2分）</p>
-                </div>
-                <div class="editdetail-view-item">
-                  <h3>考核标注：</h3>
-                  <p>有新建的，修改的扣2分</p>
-                </div>
+            <div class="editdetail-view">
+              <div class="editdetail-view-item">
+                <h3>考核内容：</h3>
+                <p>无违反规划新增私搭乱建，无擅自改变房屋用途现象（2分）</p>
+              </div>
+              <div class="editdetail-view-item">
+                <h3>考核标注：</h3>
+                <p>有新建的，修改的扣2分</p>
+              </div>
 
-                <div class="editdetail-view-img">
-                  <p>扣分项数：1项</p>
-                  <p>问题描述：发现一处违章建筑</p>
-                  <div class="editdetail-view-img_item">
-                    <img src="http://placehold.it/70x70" alt="">
-                  </div>
-                </div>
-
-                <div class="editdetail-view-img">
-                  <p>扣分项数：1项</p>
-                  <p>问题描述：发现一处违章建筑，违章广告牌，阻挡小区住户光线，并且有掉落的安全隐患。</p>
-                  <div class="editdetail-view-img_item">
-                    <img src="http://placehold.it/70x70" alt="">
-                    <img src="http://placehold.it/70x70" alt="">
-                    <img src="http://placehold.it/70x70" alt="">
-                  </div>
-                </div>
-
-                <div class="editdetail-view-footer">
-                  <span class="editdetail-view-footer_left">当前扣分：2分</span>
-                  <!-- <span class="editdetail-view-footer_right">扣分</span> -->
+              <div class="editdetail-view-img">
+                <p>扣分项数：1项</p>
+                <p>问题描述：发现一处违章建筑</p>
+                <div class="editdetail-view-img_item">
+                  <img src="http://placehold.it/70x70" alt="">
                 </div>
               </div>
 
-              <div class="editdetail-view">
-                <div class="editdetail-view-item">
-                  <h3>考核内容：</h3>
-                  <p>无违反规划新增私搭乱建，无擅自改变房屋用途现象（2分）</p>
-                </div>
-                <div class="editdetail-view-item">
-                  <h3>考核标注：</h3>
-                  <p>有新建的，修改的扣2分</p>
-                </div>
-
-                <div class="editdetail-view-img">
-                  <p>扣分项数：1项</p>
-                  <p>问题描述：发现一处违章建筑</p>
-                  <div class="editdetail-view-img_item">
-                    <img src="http://placehold.it/70x70" alt="">
-                  </div>
-                </div>
-
-                <div class="editdetail-view-img">
-                  <p>扣分项数：1项</p>
-                  <p>问题描述：发现一处违章建筑，违章广告牌，阻挡小区住户光线，并且有掉落的安全隐患。</p>
-                  <div class="editdetail-view-img_item">
-                    <img src="http://placehold.it/70x70" alt="">
-                    <img src="http://placehold.it/70x70" alt="">
-                    <img src="http://placehold.it/70x70" alt="">
-                  </div>
-                </div>
-
-                <div class="editdetail-view-footer">
-                  <span class="editdetail-view-footer_left">当前扣分：2分</span>
-                  <!-- <span class="editdetail-view-footer_right">扣分</span> -->
+              <div class="editdetail-view-img">
+                <p>扣分项数：1项</p>
+                <p>问题描述：发现一处违章建筑，违章广告牌，阻挡小区住户光线，并且有掉落的安全隐患。</p>
+                <div class="editdetail-view-img_item">
+                  <img src="http://placehold.it/70x70" alt="">
+                  <img src="http://placehold.it/70x70" alt="">
+                  <img src="http://placehold.it/70x70" alt="">
                 </div>
               </div>
 
+              <div class="editdetail-view-footer">
+                <span class="editdetail-view-footer_left">当前扣分：2分</span>
+                <!-- <span class="editdetail-view-footer_right">扣分</span> -->
+              </div>
             </div>
+
+            <div class="editdetail-view">
+              <div class="editdetail-view-item">
+                <h3>考核内容：</h3>
+                <p>无违反规划新增私搭乱建，无擅自改变房屋用途现象（2分）</p>
+              </div>
+              <div class="editdetail-view-item">
+                <h3>考核标注：</h3>
+                <p>有新建的，修改的扣2分</p>
+              </div>
+
+              <div class="editdetail-view-img">
+                <p>扣分项数：1项</p>
+                <p>问题描述：发现一处违章建筑</p>
+                <div class="editdetail-view-img_item">
+                  <img src="http://placehold.it/70x70" alt="">
+                </div>
+              </div>
+
+              <div class="editdetail-view-img">
+                <p>扣分项数：1项</p>
+                <p>问题描述：发现一处违章建筑，违章广告牌，阻挡小区住户光线，并且有掉落的安全隐患。</p>
+                <div class="editdetail-view-img_item">
+                  <img src="http://placehold.it/70x70" alt="">
+                  <img src="http://placehold.it/70x70" alt="">
+                  <img src="http://placehold.it/70x70" alt="">
+                </div>
+              </div>
+
+              <div class="editdetail-view-footer">
+                <span class="editdetail-view-footer_left">当前扣分：2分</span>
+                <!-- <span class="editdetail-view-footer_right">扣分</span> -->
+              </div>
+            </div>
+
+          </div>
         </li>
         <li class="mui-table-view-cell mui-collapse">
-            <a class="mui-navigate-right" href="#">安全管理（20分）</a>
-            <div class="mui-collapse-content">
-
-              <div class="editdetail-view">
-                <div class="editdetail-view-item">
-                  <h3>考核内容：</h3>
-                  <p>无违反规划新增私搭乱建，无擅自改变房屋用途现象（2分）</p>
-                </div>
-                <div class="editdetail-view-item">
-                  <h3>考核标注：</h3>
-                  <p>有新建的，修改的扣2分</p>
-                </div>
-                <div class="editdetail-view-footer">
-                  <span class="editdetail-view-footer_left">当前扣分：2分</span>
-                  <!-- <span class="editdetail-view-footer_right">扣分</span> -->
-                </div>
-              </div>
-
-            </div>
-        </li>
-        <li class="mui-table-view-cell mui-collapse">
-            <a class="mui-navigate-right" href="#">治安管理（20分）</a>
-            <div class="mui-collapse-content">
-
-              <div class="editdetail-view">
-                <div class="editdetail-view-item">
-                  <h3>考核内容：</h3>
-                  <p>无违反规划新增私搭乱建，无擅自改变房屋用途现象（2分）</p>
-                </div>
-                <div class="editdetail-view-item">
-                  <h3>考核标注：</h3>
-                  <p>有新建的，修改的扣2分</p>
-                </div>
-                <div class="editdetail-view-footer">
-                  <span class="editdetail-view-footer_left">当前扣分：2分</span>
-                  <!-- <span class="editdetail-view-footer_right">扣分</span> -->
-                </div>
-              </div>
-
-            </div>
-        </li>
-        <li class="mui-table-view-cell mui-collapse">
-          <a class="mui-navigate-right" href="#">物业管理（20分）</a>
+          <a class="mui-navigate-right" href="#">安全管理（20分）</a>
           <div class="mui-collapse-content">
 
             <div class="editdetail-view">
@@ -160,9 +118,10 @@
                 <!-- <span class="editdetail-view-footer_right">扣分</span> -->
               </div>
             </div>
-
           </div>
         </li>
+
+
       </ul>
     </div>
   </div>
@@ -173,13 +132,13 @@ export default {
   name: 'editdetail',
   data() {
     return {
-      isFocus: 1
+      // isFocus: 1
     }
   },
   methods: {
-    handclick(type) {
-      this.isFocus = type
-    }
+    // handclick(type) {
+    //   this.isFocus = type
+    // }
   }
 }
 </script>
