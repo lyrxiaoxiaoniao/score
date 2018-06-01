@@ -45,7 +45,9 @@ export default {
     // 获取当前用户的任务/小区/评分列表。传taskId的值获取任务的小区列表，否则获取任务列表
     list: '/wx/fn/asm/tc/index',
     // 小区考核分类列表
-    class: '/wx/fn/asm/category/index'
+    class: '/wx/fn/asm/category/index',
+    // userAccessStatus = 2 , tcId || 大提交无法修改
+    update: '/wx/fn/asm/tc/update'
   },
   score: {
     // 评分详情列表

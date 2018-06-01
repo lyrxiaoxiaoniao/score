@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import copyRight from '../common/copyRight.vue'
 import notData from '../common/notData.vue'
 import loading from '../common/loading.vue'

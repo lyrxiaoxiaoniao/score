@@ -23,10 +23,11 @@
 
       <div class="newdetail-view-content">
 
-        <div @click="toEdit(item)" v-for="item in dataList" :key="item.id" class="newdetail-view-content-item">
+        <div v-if="dataList.length" @click="toEdit(item)" v-for="item in dataList" :key="item.id" class="newdetail-view-content-item">
           <i></i>
           <div class="item-left">
-            <img :src="item.resources[0].remoteUrl" alt="">
+            <img v-if="item.resources[0]" :src="item.resources[0].remoteUrl" alt="">
+            <img v-else src="http://placehold.it/70x70" alt="">
           </div>
           <div class="item-right">
             <h3>扣分：{{item.delta}}</h3>

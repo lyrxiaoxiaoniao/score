@@ -20,9 +20,9 @@ let routers = [
     component: () => import('../components/login/weChatLogin.vue')
   },
   {
-    path: '/set',
-    name: 'set',
-    component: () => import('../components/my/set.vue')
+    path: '/mine',
+    name: 'mine',
+    component: () => import('../components/my/index.vue')
   },
   // 主页
   {

@@ -12,6 +12,8 @@ class Storage {
       try {
         data = JSON.stringify(value)
       } catch (e) {}
+    } else {
+      data = JSON.stringify(value)
     }
     this.storage.setItem(this.prefix + key, data)
     typeof fun === 'function' && fun()

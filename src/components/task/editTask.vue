@@ -14,7 +14,7 @@
       </div>
     </div>
     <ul v-show="dataList" class="mui-table-view">
-        <li v-for="rules in dataList" :key="rules.id" class="mui-table-view-cell mui-collapse">
+        <li @tap="showItem(index)" v-for="(rules, index) in dataList" :key="rules.id" class="mui-table-view-cell mui-collapse">
           <a class="mui-navigate-right" href="#">{{rules.displayName}}</a>
           <div class="mui-collapse-content">
 
@@ -30,7 +30,7 @@
                 <p>{{item.standard}} ({{item.deducte}}分)</p>
               </div>
               <div class="edittask-view-footer">
-                <span class="edittask-view-footer_left">当前扣分：0分</span>
+                <span class="edittask-view-footer_left">当前扣分：{{showItemDetail[item.id] ? showItemDetail[item.id].length * item.deducte : 0}}分</span>
                 <span @click="koufen(item, rules.displayName)" class="edittask-view-footer_right">扣分</span>
               </div>
             </div>
@@ -62,55 +62,15 @@
               </div>
 
             </div>
-        </li>
-        <li class="mui-table-view-cell mui-collapse">
-            <a class="mui-navigate-right" href="#">治安管理（20分）</a>
-            <div class="mui-collapse-content">
-
-              <div class="edittask-view">
-                <div class="edittask-view-item">
-                  <h3>考核内容：</h3>
-                  <p>无违反规划新增私搭乱建，无擅自改变房屋用途现象（2分）</p>
-                </div>
-                <div class="edittask-view-item">
-                  <h3>考核标注：</h3>
-                  <p>有新建的，修改的扣2分</p>
-                </div>
-                <div class="edittask-view-footer">
-                  <span class="edittask-view-footer_left">当前扣分：2分</span>
-                  <span class="edittask-view-footer_right">扣分</span>
-                </div>
-              </div>
-
-            </div>
-        </li>
-        <li class="mui-table-view-cell mui-collapse">
-            <a class="mui-navigate-right" href="#">物业管理（20分）</a>
-            <div class="mui-collapse-content">
-
-              <div class="edittask-view">
-                <div class="edittask-view-item">
-                  <h3>考核内容：</h3>
-                  <p>无违反规划新增私搭乱建，无擅自改变房屋用途现象（2分）</p>
-                </div>
-                <div class="edittask-view-item">
-                  <h3>考核标注：</h3>
-                  <p>有新建的，修改的扣2分</p>
-                </div>
-                <div class="edittask-view-footer">
-                  <span class="edittask-view-footer_left">当前扣分：2分</span>
-                  <span class="edittask-view-footer_right">扣分</span>
-                </div>
-              </div>
-
-            </div>
         </li> -->
 
     </ul>
+    <copy-right></copy-right>
   </div>
 </template>
 
 <script>
+import copyRight from '../common/copyRight'
 export default {
   name: 'edittask',
   data() {
@@ -124,13 +84,47 @@ export default {
         size: 1000,
         page: 0,
         key: ''
-      }
+      },
+      paramDetail: {
+        tcId: JSON.parse(sessionStorage.getItem('tcId')) || '',
+        itemIds: []
+      },
+      submitParam: {
+        tcId: JSON.parse(sessionStorage.getItem('tcId')) || '',
+        userAccessStatus: 2
+      },
+      showItemsArr: [],
+      showItemDetail: {}
     }
   },
+  components: { copyRight },
   mounted() {
     this.getCategoryList()
   },
   methods: {
+    onSubmit() {
+      // {tcId: JSON.parse(sessionStorage.getItem('tcId')), userAccessStatus: 2}
+      this.$LToast(
+        '提交后，不能在进行修改哦 确认提交',
+        'warn',
+        true,
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        },
+        () => {
+          console.log('提交成功！')
+          // this.$api
+          //   .post(
+          //     this.config.baseserverURI + this.config.task.update,
+          //     this.submitParam
+          //   )
+          //   .then(res => {
+          //     console.log('提交成功！')
+          //   })
+        }
+      )
+    },
     toBack() {
       if (this.$store.state.routerchange) {
         this.$router.back()
@@ -138,7 +132,54 @@ export default {
         this.$router.replace('/')
       }
     },
-    onSubmit() {},
+    showItem(index) {
+      if (this.handleClick(index)) {
+        this.paramDetail.itemIds = []
+        this.paramDetail.itemIds = this.dataList[index].items.map(v => {
+          return v.id
+        })
+        if (!this.paramDetail.itemIds.length) {
+          return
+        }
+        let paramdata =
+          '?tcId=' +
+          this.paramDetail.tcId +
+          '&itemIds=' +
+          this.paramDetail.itemIds.join('&itemIds=')
+        console.log(paramdata, 'itemIds')
+        this.$api
+          .get(this.config.baseserverURI + this.config.score.index + paramdata)
+          .then(res => {
+            console.log(this.unique(res.data.data), 'cheshishuju1111111')
+            this.showItemDetail = this.unique(res.data.data)
+          })
+      }
+    },
+    unique(arr) {
+      let json = {}
+      for (var i = 0; i < arr.length; i++) {
+        if (!json[arr[i].itemId]) {
+          json[arr[i].itemId] = []
+          json[arr[i].itemId].push(arr[i])
+        } else {
+          json[arr[i].itemId].push(arr[i])
+        }
+      }
+      return json
+    },
+    // 得到当前是哪个item展开,当前点击展开返回true,否则为false
+    handleClick(index) {
+      let isShow
+      this.showItemsArr.forEach((v, i) => {
+        if (i === index) {
+          v.show = !v.show
+          isShow = v.show
+        } else {
+          v.show = false
+        }
+      })
+      return isShow
+    },
     koufen(item, name) {
       sessionStorage.setItem('itemDetail', JSON.stringify(item))
       this.$router.push({
@@ -153,6 +194,9 @@ export default {
           if (res.data.errcode === '0000') {
             console.log(res.data.data, '123123')
             this.dataList = res.data.data.content
+            this.dataList.forEach(v => {
+              this.showItemsArr.push({ show: false })
+            })
           }
         })
     }

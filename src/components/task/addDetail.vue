@@ -16,11 +16,11 @@
           <div v-for="(image, index) in resourceImages" :key="index" class="upload-img">
             <i @click="imgRemove(image, index)"></i>
             <!-- <img src="http://placehold.it/70x70" alt=""> -->
-            <img :src="image" alt="">
+            <img @click="selectImg(index)" :src="image" alt="">
           </div>
           <!-- <div class="upload-img">
             <i @click="imgRemove"></i>
-            <img src="http://placehold.it/70x70" alt="">
+            <img @click="selectImg(0)" src="http://placehold.it/70x70" alt="">
           </div> -->
           <div class="upload-img" v-show="resourceImages.length < max">
             <uploadimg class="showimg" :fileURL="uploadUrl" @primary-imgUrl="getImgUrl"></uploadimg>
@@ -35,6 +35,16 @@
     </div>
     <copy-right></copy-right>
     <loading :is-show="loadingData"></loading>
+    <transition name="slide-fade" class="fadeView">
+      <div v-if="showImg">
+        <image-view
+          :imgArr="resourceImages"
+          :showImageView="true"
+          :imageIndex="imageIndex"
+          v-on:hideImage="hideImageView">
+        </image-view>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -43,6 +53,7 @@ import uploadimg from '../common/uploadimg.vue'
 import copyRight from '../common/copyRight'
 import loading from '../common/loading'
 import { Toast } from 'mint-ui'
+import imageView from 'vue-imageview'
 export default {
   name: 'adddetail',
   data() {
@@ -59,15 +70,29 @@ export default {
       },
       resourceImages: [],
       max: 3,
-      loadingData: false
+      loadingData: false,
+      // 图片展示
+      showImg: false,
+      imageIndex: 0
     }
   },
-  components: { uploadimg, copyRight, loading },
+  components: { uploadimg, copyRight, loading, imageView },
   mounted() {
     // 修改的时候获取默认信息
-    this.getDefault()
+    if (this.id) {
+      this.getDefault()
+    }
   },
   methods: {
+    // 图片展示
+    hideImageView() {
+      this.showImg = false
+    },
+    selectImg(index, images) {
+      this.showImg = true
+      this.imageIndex = index
+    },
+    // 图片展示
     toBack() {
       if (this.$store.state.routerchange) {
         this.$router.back()
@@ -84,6 +109,15 @@ export default {
       this.resourceImages.push(val.remoteUrl)
     },
     onSubmit() {
+      if (!this.resourceImages.length) {
+        // Toast('请上传图片')
+        this.$LToast('必须上传图片', 'warn', {
+          showCancel: true,
+          confirmButtonText: '确认',
+          cancelButtonText: '取消'
+        })
+        return
+      }
       let URL = this.config.baseserverURI + this.config.score.add
       if (this.id) {
         URL = this.config.baseserverURI + this.config.score.update

@@ -94,6 +94,19 @@ export default {
   mounted() {
     // this.getBanner()
     this.getCategoryList()
+
+    this.$LToast(
+      '测试连接，我就是要测试，你把我怎样',
+      'warn',
+      {
+        showCancel: true,
+        confirmButtonText: 'ceshi',
+        cancelButtonText: '请问去'
+      },
+      () => {
+        console.log('点击确定')
+      }
+    )
   },
   methods: {
     toTask() {

@@ -1,7 +1,7 @@
 <template>
   <div class="editdetail">
     <mt-header fixed title="考核记录">
-      <mt-button icon="back" slot="left"></mt-button>
+      <mt-button @click="toBack" icon="back" slot="left"></mt-button>
     </mt-header>
     <!-- <div class="editdetail-tab">
       <div @tap="handclick(1)" class="editdetail-tab-item" :class="{'active' : isFocus === 1}">
@@ -21,86 +21,46 @@
           <img src="http://placehold.it/36x36" alt="">
         </div>
         <div class="editdetail-header_text">
-          <p>考核任务：2018年4月到5月份考核</p>
-          <p>考核小区：鑫源小区</p>
+          <p>考核任务：{{communityDetail.task.name}}</p>
+          <p>考核小区：{{communityDetail.community.name}}</p>
         </div>
       </div>
-      <ul class="mui-table-view">
-        <li class="mui-table-view-cell mui-collapse">
-          <a class="mui-navigate-right" href="#">环境卫生（20分）</a>
+      <ul v-show="dataList" class="mui-table-view">
+        <li @tap="showItem(index)" v-for="(rules, index) in dataList" :key="rules.id"  class="mui-table-view-cell mui-collapse">
+          <a class="mui-navigate-right" href="#">{{rules.displayName}}</a>
           <div class="mui-collapse-content">
 
-            <div class="editdetail-view">
+            <div v-show="rules.items.length" v-for="item in rules.items" :key="item.id" class="editdetail-view">
               <div class="editdetail-view-item">
                 <h3>考核内容：</h3>
-                <p>无违反规划新增私搭乱建，无擅自改变房屋用途现象（2分）</p>
+                <p>{{item.content}} ({{item.score}}分)</p>
               </div>
               <div class="editdetail-view-item">
                 <h3>考核标注：</h3>
-                <p>有新建的，修改的扣2分</p>
+                <p>{{item.standard}} ({{item.deducte}}分)</p>
               </div>
 
-              <div class="editdetail-view-img">
+              <div v-show="showItemDetail[item.id]" v-for="keyitem in showItemDetail[item.id]" :key="keyitem.id" class="editdetail-view-img">
                 <p>扣分项数：1项</p>
-                <p>问题描述：发现一处违章建筑</p>
+                <p>问题描述：{{keyitem.content}}</p>
                 <div class="editdetail-view-img_item">
-                  <img src="http://placehold.it/70x70" alt="">
-                </div>
-              </div>
-
-              <div class="editdetail-view-img">
-                <p>扣分项数：1项</p>
-                <p>问题描述：发现一处违章建筑，违章广告牌，阻挡小区住户光线，并且有掉落的安全隐患。</p>
-                <div class="editdetail-view-img_item">
-                  <img src="http://placehold.it/70x70" alt="">
-                  <img src="http://placehold.it/70x70" alt="">
-                  <img src="http://placehold.it/70x70" alt="">
+                  <img @click="selectImg(index, keyitem.resources)" v-for="(image, index) in keyitem.resources" :key="image.id" :src="image.remoteUrl" alt="">
                 </div>
               </div>
 
               <div class="editdetail-view-footer">
-                <span class="editdetail-view-footer_left">当前扣分：2分</span>
+                <span class="editdetail-view-footer_left">当前扣分：{{showItemDetail[item.id] ? showItemDetail[item.id].length * item.deducte : 0}}分</span>
                 <!-- <span class="editdetail-view-footer_right">扣分</span> -->
               </div>
             </div>
 
-            <div class="editdetail-view">
-              <div class="editdetail-view-item">
-                <h3>考核内容：</h3>
-                <p>无违反规划新增私搭乱建，无擅自改变房屋用途现象（2分）</p>
-              </div>
-              <div class="editdetail-view-item">
-                <h3>考核标注：</h3>
-                <p>有新建的，修改的扣2分</p>
-              </div>
-
-              <div class="editdetail-view-img">
-                <p>扣分项数：1项</p>
-                <p>问题描述：发现一处违章建筑</p>
-                <div class="editdetail-view-img_item">
-                  <img src="http://placehold.it/70x70" alt="">
-                </div>
-              </div>
-
-              <div class="editdetail-view-img">
-                <p>扣分项数：1项</p>
-                <p>问题描述：发现一处违章建筑，违章广告牌，阻挡小区住户光线，并且有掉落的安全隐患。</p>
-                <div class="editdetail-view-img_item">
-                  <img src="http://placehold.it/70x70" alt="">
-                  <img src="http://placehold.it/70x70" alt="">
-                  <img src="http://placehold.it/70x70" alt="">
-                </div>
-              </div>
-
-              <div class="editdetail-view-footer">
-                <span class="editdetail-view-footer_left">当前扣分：2分</span>
-                <!-- <span class="editdetail-view-footer_right">扣分</span> -->
-              </div>
+            <div v-show="!rules.items.length" class="editdetail-view">
+              暂无考核内容！
             </div>
 
           </div>
         </li>
-        <li class="mui-table-view-cell mui-collapse">
+        <!-- <li class="mui-table-view-cell mui-collapse">
           <a class="mui-navigate-right" href="#">安全管理（20分）</a>
           <div class="mui-collapse-content">
 
@@ -113,32 +73,163 @@
                 <h3>考核标注：</h3>
                 <p>有新建的，修改的扣2分</p>
               </div>
+
+              <div class="editdetail-view-img">
+                <p>扣分项数：1项</p>
+                <p>问题描述：发现一处违章建筑</p>
+                <div class="editdetail-view-img_item">
+                  <img src="http://placehold.it/70x70" alt="">
+                </div>
+              </div>
+
+              <div class="editdetail-view-img">
+                <p>扣分项数：1项</p>
+                <p>问题描述：发现一处违章建筑，违章广告牌，阻挡小区住户光线，并且有掉落的安全隐患。</p>
+                <div class="editdetail-view-img_item">
+                  <img src="http://placehold.it/70x70" alt="">
+                  <img src="http://placehold.it/70x70" alt="">
+                  <img src="http://placehold.it/70x70" alt="">
+                </div>
+              </div>
+
               <div class="editdetail-view-footer">
                 <span class="editdetail-view-footer_left">当前扣分：2分</span>
-                <!-- <span class="editdetail-view-footer_right">扣分</span> -->
+                <span class="editdetail-view-footer_right">扣分</span>
               </div>
             </div>
-          </div>
-        </li>
 
+          </div>
+        </li> -->
 
       </ul>
     </div>
+    <transition name="slide-fade" class="fadeView">
+      <div v-if="showImg">
+        <image-view
+          :imgArr="imageViewArr"
+          :showImageView="true"
+          :imageIndex="imageIndex"
+          v-on:hideImage="hideImageView">
+        </image-view>
+      </div>
+    </transition>
+    <copy-right></copy-right>
   </div>
 </template>
 
 <script>
+import imageView from 'vue-imageview'
+import copyRight from '../common/copyRight'
 export default {
   name: 'editdetail',
   data() {
     return {
-      // isFocus: 1
+      communityDetail:
+        JSON.parse(sessionStorage.getItem('communityDetail')) || null,
+      dataList: null,
+      param: {
+        taskId: sessionStorage.getItem('taskId'),
+        status: 1,
+        size: 1000,
+        page: 0,
+        key: ''
+      },
+      paramDetail: {
+        tcId: JSON.parse(sessionStorage.getItem('tcId')) || '',
+        itemIds: []
+      },
+      showItemsArr: [],
+      showItemDetail: {},
+      // 图片展示
+      showImg: false,
+      imageIndex: 0,
+      imageViewArr: []
     }
   },
+  components: { imageView, copyRight },
+  mounted() {
+    this.getCategoryList()
+  },
   methods: {
-    // handclick(type) {
-    //   this.isFocus = type
-    // }
+    // 图片展示
+    hideImageView() {
+      this.showImg = false
+    },
+    selectImg(index, images) {
+      this.imageViewArr = images.map(v => {
+        return v.remoteUrl
+      })
+      this.showImg = true
+      this.imageIndex = index
+    },
+    // 图片展示
+    toBack() {
+      if (this.$store.state.routerchange) {
+        this.$router.back()
+      } else {
+        this.$router.replace('/')
+      }
+    },
+    showItem(index) {
+      if (this.handleClick(index)) {
+        this.paramDetail.itemIds = []
+        this.paramDetail.itemIds = this.dataList[index].items.map(v => {
+          return v.id
+        })
+        if (!this.paramDetail.itemIds.length) {
+          return
+        }
+        let paramdata =
+          '?tcId=' +
+          this.paramDetail.tcId +
+          '&itemIds=' +
+          this.paramDetail.itemIds.join('&itemIds=')
+        this.$api
+          .get(this.config.baseserverURI + this.config.score.index + paramdata)
+          .then(res => {
+            console.log(this.unique(res.data.data), 'cheshishuju1111111')
+            this.showItemDetail = this.unique(res.data.data)
+          })
+      }
+    },
+    unique(arr) {
+      let json = {}
+      for (var i = 0; i < arr.length; i++) {
+        if (!json[arr[i].itemId]) {
+          json[arr[i].itemId] = []
+          json[arr[i].itemId].push(arr[i])
+        } else {
+          json[arr[i].itemId].push(arr[i])
+        }
+      }
+      return json
+    },
+    // 得到当前是哪个item展开,当前点击展开返回true,否则为false
+    handleClick(index) {
+      let isShow
+      this.showItemsArr.forEach((v, i) => {
+        if (i === index) {
+          v.show = !v.show
+          isShow = v.show
+        } else {
+          v.show = false
+        }
+      })
+      return isShow
+    },
+    getCategoryList() {
+      this.$api
+        .get(this.config.baseserverURI + this.config.task.class, this.param)
+        .then(res => {
+          if (res.data.errcode === '0000') {
+            // console.log(res.data.data, '123123')
+            this.dataList = res.data.data.content
+            this.dataList.forEach(v => {
+              this.showItemsArr.push({ show: false })
+            })
+          }
+        })
+    }
   }
 }
 </script>
@@ -259,6 +350,7 @@ export default {
         display: flex;
         justify-content: flex-start;
         img {
+          border: 1px solid lightgray;
           margin-right: 0.2667rem;
           width: 1.8667rem;
           height: 1.8667rem;

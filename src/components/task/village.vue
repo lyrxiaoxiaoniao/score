@@ -101,10 +101,17 @@ export default {
     toDetail(item) {
       sessionStorage.setItem('communityDetail', JSON.stringify(item))
       sessionStorage.setItem('tcId', JSON.stringify(item.id))
-      this.$router.push({
-        path: '/edittask',
-        query: { communityId: item.id }
-      })
+      if (item.userAccessStatus === 2) {
+        this.$router.push({
+          path: '/editdetail',
+          query: { communityId: item.id }
+        })
+      } else {
+        this.$router.push({
+          path: '/edittask',
+          query: { communityId: item.id }
+        })
+      }
     },
     loadBottom() {
       this.getList('down')

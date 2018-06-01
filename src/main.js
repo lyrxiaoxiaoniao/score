@@ -11,12 +11,12 @@ import api from './api'
 import config from './config'
 import * as filters from './filters'
 import store from './store'
-import './utils/rem'
-import utils from './utils/index'
+import './utils/rem' // 设置rem
+import utils from './utils/index' // 工具函数
 
 // 公共全局组件
-// import LToast from './components/globel/Ltoast/index.js'
-// Vue.use(LToast)
+import LToast from './components/globel/Ltoast/index.js'
+Vue.use(LToast)
 // 点位标识配置文件
 import slug from './slug'
 Vue.prototype.$slug = slug
