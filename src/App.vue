@@ -10,11 +10,22 @@ export default {
   data() {
     return {}
   },
+  created() {
+    sessionStorage.setItem('scid', this.getQueryString('scid'))
+  },
   watch: {
-    '$route': function () {
+    $route: function() {
       this.$store.state.routerchange = true
     }
   },
+  methods: {
+    getQueryString(name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
+      var r = window.location.search.substr(1).match(reg)
+      if (r != null) return unescape(r[2])
+      return null
+    }
+  }
 }
 </script>
 
