@@ -206,7 +206,8 @@ export default {
 
 <style lang="less" scoped>
 .edittask {
-  padding-top: 40px;
+  padding-top: 1.1733rem;
+  // padding-top: 40px;
   &-header {
     background-color: #fff;
     padding: 0.5333rem/2;

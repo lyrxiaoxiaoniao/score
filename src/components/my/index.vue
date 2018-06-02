@@ -38,20 +38,15 @@ export default {
   },
   components: { copyRight, CDialog },
   mounted() {
-    // this.$LToast('MY HOME', 'success', {
-    //   showCancel: true,
-    //   confirmButtonText: 'confim',
-    //   cancelButtonText: 'cancel'
-    // })
+    this.$LToast('MY HOME', 'success', {
+      showCancel: true,
+      confirmButtonText: 'confim',
+      cancelButtonText: 'cancel'
+    })
   },
   methods: {
     onShow() {
       // this.show = !this.show
-      // location.href =
-      //   this.config.baseserverURI +
-      //   'app/member/index.html?scid=' +
-      //   sessionStorage.scid +
-      //   '#/membercenter'
       location.href =
         'https://gov.shencom.cn' +
         '/app/member/index.html?scid=' +
@@ -75,7 +70,8 @@ export default {
 <style lang="less" scoped>
 .mine {
   position: relative;
-  padding-top: 40px;
+  padding-top: 1.1733rem;
+  // padding-top: 40px;
   padding-bottom: 2.6133rem/2;
   height: 100%;
   &-header {
@@ -88,13 +84,13 @@ export default {
     align-items: center;
     &-img {
       margin-left: 0.8rem;
-      width: 1.8667rem;
-      height: 1.8667rem;
+      width: 1.6rem;
+      height: 1.6rem;
       border-radius: 100%;
       overflow: hidden;
       img {
-        width: 1.8667rem;
-        height: 1.8667rem;
+        width: 1.6rem;
+        height: 1.6rem;
       }
     }
     &-text{
@@ -115,8 +111,8 @@ export default {
     left: 0;
     right: 0;
     width: 100%;
-    height: 2.6133rem/2;
-    line-height: 2.6133rem/2;
+    height: 2.3467rem/2;
+    line-height: 2.3467rem/2;
     font-size: 0.96rem/2;
     text-align: center;
     border: 1px solid #ececec;
@@ -131,3 +127,4 @@ export default {
   }
 }
 </style>
+

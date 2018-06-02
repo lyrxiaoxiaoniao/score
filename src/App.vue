@@ -35,3 +35,20 @@ export default {
   width: 100%;
 }
 </style>
+<style lang="less">
+.mint-header{
+  // background-color: #fff;
+  // color: #000;
+  height: 1.1733rem;
+}
+header{
+  background-color: #26a2ff !important;
+  h1{
+    color: #fff !important;
+  }
+}
+a {
+    text-decoration: none;
+    color: #fff;
+}
+</style>

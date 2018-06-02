@@ -186,7 +186,8 @@ export default {
 
 <style lang="less" scoped>
 .village {
-  padding-top: 40px;
+  padding-top: 1.1733rem;
+  // padding-top: 40px;
   &-tab {
     background-color: #fff;
     height: 1.1733rem;

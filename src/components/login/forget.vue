@@ -35,7 +35,8 @@
 								</form>
 			        </div>
 			        <div class="mui-input-row mui-checkbox mui-left forget-checked-box">
-							  <label style="width: 75%;padding-left: 14px;">本人已经了解密码更改风险</label><a @tap="open" class="a-link" href="javascript:;">《修改密码服务协议》</a>
+							  <label style="width: 75%;padding-left: 14px;">本人已经了解密码更改风险</label>
+                <!-- <a @tap="open" class="a-link" href="javascript:;">《修改密码服务协议》</a> -->
 							  <input style="left:5%;" @change="isChecked" name="checkbox1" value="Item 1" type="checkbox" checked>
 							</div>
 
@@ -254,6 +255,7 @@ export default {
   position: absolute;
   top: 0.2rem;
   right: 0.1rem;
+  color: #26a2ff;
 }
 .mui-off-canvas-wrap .mui-bar {
   position: absolute !important;
@@ -264,5 +266,18 @@ export default {
 }
 .forget-btn-back .mui-icon[data-v-5bf1ce18] {
   padding-top: 0.2667rem;
+}
+</style>
+<style lang="less" scoped>
+.mui-btn-blue,
+.mui-btn-primary,
+input[type='submit'] {
+  color: #fff;
+  border: 1px solid #26a2ff;
+  background-color: #26a2ff;
+}
+.mui-checkbox input[type='checkbox']:checked:before,
+.mui-radio input[type='radio']:checked:before {
+  color: #26a2ff;
 }
 </style>

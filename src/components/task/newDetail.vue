@@ -157,7 +157,8 @@ export default {
 .newdetail {
   position: relative;
   padding: 0 0.5333rem/2;
-  padding-top: 40px;
+  padding-top: 1.1733rem;
+  // padding-top: 40px;
   height: 100%;
   &-view {
     margin-top: 0.2667rem;

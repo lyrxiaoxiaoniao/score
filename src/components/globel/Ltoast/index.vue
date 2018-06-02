@@ -45,7 +45,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .dialog {
-  z-index: 999;
+  z-index: 99999;
   position: fixed;
   top: 0;
   left: 0;

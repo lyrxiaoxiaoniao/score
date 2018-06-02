@@ -3,7 +3,10 @@
     <div class="home-banner">
       <mt-swipe :auto="2000">
         <mt-swipe-item v-for="(item, index) in sliderList" :key="index">
-          <img :src="item" alt="banner">
+          <!-- <img :src="item" alt="banner"> -->
+          <a :href="item.link ? item.link : 'javascript:;'">
+            <img :src="item.imgSrc">
+          </a>
         </mt-swipe-item>
       </mt-swipe>
     </div>
@@ -78,12 +81,12 @@
 <script>
 import { Toast } from 'mint-ui'
 import loading from '../common/loading'
-import copyRight from '../common/copyRight';
+import copyRight from '../common/copyRight'
 export default {
   name: 'home',
   data() {
     return {
-      sliderList: ['./static/images/home/banner.png'],
+      sliderList: [{ imgSrc: './static/images/home/banner.png', link: '' }],
       newData: [],
       CategotyFirstDataId: null,
       categoryListCurrentPage: 0,
@@ -95,18 +98,18 @@ export default {
     // this.getBanner()
     this.getCategoryList()
 
-    this.$LToast(
-      '测试连接，我就是要测试，你把我怎样',
-      'warn',
-      {
-        showCancel: true,
-        confirmButtonText: 'ceshi',
-        cancelButtonText: '请问去'
-      },
-      () => {
-        console.log('点击确定')
-      }
-    )
+    // this.$LToast(
+    //   '测试连接，我就是要测试，你把我怎样',
+    //   'warn',
+    //   {
+    //     showCancel: true,
+    //     confirmButtonText: 'ceshi',
+    //     cancelButtonText: '请问去'
+    //   },
+    //   () => {
+    //     console.log('点击确定')
+    //   }
+    // )
   },
   methods: {
     toTask() {
@@ -116,10 +119,22 @@ export default {
       Toast('数据中心待开放中，敬请期待')
     },
     jumpToClassify(name, id) {
-      location.href = this.config.baseserverURI + '/app/cms/index.html?scid=' + sessionStorage.scid + '#/classify?name=' + name + '&id=' + id
+      location.href =
+        this.config.baseserverURI +
+        '/app/cms/index.html?scid=' +
+        sessionStorage.scid +
+        '#/classify?name=' +
+        name +
+        '&id=' +
+        id
     },
     jumpArticle(id) {
-      location.href = this.config.baseserverURI + '/app/cms/index.html?scid=' + sessionStorage.scid + '#/Article?id=' + id
+      location.href =
+        this.config.baseserverURI +
+        '/app/cms/index.html?scid=' +
+        sessionStorage.scid +
+        '#/Article?id=' +
+        id
     },
     getCategotyFirstDataList: function(id) {
       let v = this
@@ -169,27 +184,23 @@ export default {
         })
         .catch(function() {})
     },
-    getBanner: function () {
+    getBanner: function() {
       let v = this
       v.loadingData = true
-      v.$api.get(v.config.baseserverURI + v.config.getBannerAPI,{
-        slug: v.$slug[sessionStorage.scid].team
-      })
-        .then(function (json) {
+      v.$api
+        .get(v.config.baseserverURI + v.config.getBannerAPI, {
+          slug: v.$slug[sessionStorage.scid].team
+        })
+        .then(function(json) {
           v.loadingData = false
           let imgSrcArr = []
           let data = json.data.data
-          for(let i = 0;i < data.length; i ++){
-            let imgSrco = {}
-            imgSrco.imgSrc = data[i].poster
-            imgSrco.link = data[i].memo
-            imgSrcArr.push(imgSrco)
-          }
-          for(let key in imgSrcArr){
-            v.sliderList.push(imgSrcArr[key])
-          }
-        }).catch(function () {
-      })
+          data.forEach(val => {
+            imgSrcArr.push({ imgSrc: val.poster, link: val.memo })
+          })
+          v.sliderList = imgSrcArr
+        })
+        .catch(function() {})
     }
   }
 }
@@ -202,6 +213,11 @@ export default {
   &-banner {
     height: 8rem/2;
     border-bottom: 1px solid #e6e6e6;
+    a{
+      display: block;
+      width: 100%;
+      height: 8rem/2;
+    }
     img {
       width: 100%;
       height: 8rem/2;

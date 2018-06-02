@@ -82,7 +82,7 @@
         isBindWX: false,
         ua: window.navigator.userAgent.toLowerCase(),
 				isWX: false,
-        isShowTemplate: false, // 判断是否是本地登录、或者是微信登录，如果是，显示当前帐号密码式的登录页，如果不是，跳转首页或一键登录页
+        isShowTemplate: true // 判断是否是本地登录、或者是微信登录，如果是，显示当前帐号密码式的登录页，如果不是，跳转首页或一键登录页
       }
     },
     components: {
@@ -257,11 +257,8 @@
     		if(!(/^1[3|4|5|7|8]\d{9}$/.test(_this.form.phone))){
           mui.alert('不是正确的11位手机号','消息','确定')
 		      return
-				}
-				// if (_this.form.username.length === 0) {
-//        Toast('请先填写用户名')
-				// 	return
-				// }
+        }
+
 				this.$api.get(this.config.baseserverURI + this.config.basic.loginMail,{
           phone : _this.form.phone,
           scid : _this.scid
@@ -320,23 +317,25 @@
   .login-btn-loginBtn{
   	width: 90%;
     margin: 0 auto;
-    margin-top: 10px;
-    padding: 10px 0;
+    margin-top: 0.2667rem;
+    padding: 0.2667rem 0;
   }
   .login-router-link{
   	width: 90%;
   	margin: 0 auto;
-  	margin-top: 10px;
+  	margin-top: 0.2667rem;
     height: 1rem;
   }
   .login-router-link a{
   	display: inline-block;
   }
   .login-router-reg{
-  	float: left;
+    float: left;
+    color: #26a2ff;
   }
   .login-router-forget{
-  	float: right;
+    float: right;
+    color: #26a2ff;
   }
   .login-checked-box.mui-left input[type=checkbox], .login-checked-box.mui-left input[type=radio]{
   	left: 17%;
@@ -353,4 +352,11 @@
     -webkit-box-shadow: 0 1px 6px #ccc;
     box-shadow: 0 1px 6px #ccc;
 	}
+</style>
+<style lang="less" scoped>
+.mui-btn-blue, .mui-btn-primary, input[type=submit] {
+    color: #fff;
+    border: 1px solid #26a2ff;
+    background-color: #26a2ff;
+}
 </style>

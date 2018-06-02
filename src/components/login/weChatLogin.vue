@@ -13,7 +13,7 @@
                 <img :src="avatar" />
                 <!--<img src="../../../static/images/LaJiTouXiang.png" />-->
                 <span>您的微信已绑定</span>
-                <p>罗湖城管垃圾分类综合管理平台账号，可一键登录</p>
+                <p>南湖街道物业评分管理平台账号，可一键登录</p>
               </div>
               <div class="login-btn">
                 <button @tap="login(1)" type="button" class="mui-btn mui-btn-success mui-btn-block">

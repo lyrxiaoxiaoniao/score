@@ -22,7 +22,7 @@ LToast.install = function(Vue) {
    * @param {Function} confimFn  选填 | 点击确认按钮回调
    * @param {Function} cancelFn  选填 | 点击取消按钮回调
    */
-  Vue.prototype.$LToast = ( content, type, {showCancel= true, confirmButtonText='', cancelButtonText= ''} = {}, confimFn, cancelFn) => {
+  Vue.prototype.$LToast = ( content, type, {showCancel= true, confirmButtonText='confim', cancelButtonText= 'cancel'} = {}, confimFn, cancelFn) => {
     instance.visible = true
     instance.message = content
     instance.type = type
